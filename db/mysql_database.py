@@ -31,8 +31,8 @@ class MySQLDatabase(Database):
         self.cursor.execute(f"CREATE DATABASE IF NOT EXISTS {self.db}")
         self.cursor.execute(f"USE {self.db}")
 
-        self.execute_sql_file("rooms_schema.sql")
-        self.execute_sql_file("students_schema.sql")
+        self.execute_sql_file("schemas/rooms_schema.sql")
+        self.execute_sql_file("schemas/students_schema.sql")
 
         self.conn.commit()
 
