@@ -4,21 +4,15 @@ from handlers import QueryHandler
 from typing import Any
 from db import Database
 from models import Room, Student
+from config import Config
 
 
 class App:
-    def __init__(
-        self,
-        host: str,
-        user: str,
-        password: str,
-        database: str,
-        db: Database
-    ):
-        self.host = host
-        self.user = user
-        self.password = password
-        self.database = database
+    def __init__(self, db: Database):
+        self.host = Config.db_host
+        self.user = Config.db_user
+        self.password = Config.db_password
+        self.database = Config.db_name
 
         self.db = db
         self.loader = JSONLoader()
@@ -32,11 +26,14 @@ class App:
         self.db.setup_db()
         print("Database has been setup")
 
-        rooms = self.loader.load("rooms.json", model=Room)
+        self.data_handler.clean_tables()
+        print("Tables cleaned")
+
+        rooms = self.loader.load("data/rooms.json", model=Room)
         self.data_handler.insert_rooms(rooms)
         print("Rooms have been added")
 
-        students = self.loader.load("students.json", model=Student)
+        students = self.loader.load("data/students.json", model=Student)
         self.data_handler.insert_students(students)
         print("Students have been added")
 

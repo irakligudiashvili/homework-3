@@ -6,8 +6,11 @@ class DataHandler:
     def __init__(self, db: Database):
         self.db = db
 
-    def insert_rooms(self, rooms: list[Room]) -> None:
+    def clean_tables(self):
+        self.db.execute_query("DELETE FROM students")
         self.db.execute_query("DELETE FROM rooms")
+
+    def insert_rooms(self, rooms: list[Room]) -> None:
         data = [(room.id, room.name) for room in rooms]
         self.db.execute_many(
             "INSERT INTO rooms (id, name) VALUES (%s, %s)",
@@ -15,7 +18,6 @@ class DataHandler:
         )
 
     def insert_students(self, students: list[Student]) -> None:
-        self.db.execute_query("DELeTE FROM students")
         data = [
             (
                 student.id,
